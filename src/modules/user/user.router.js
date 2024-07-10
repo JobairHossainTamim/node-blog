@@ -13,6 +13,7 @@ const comparePassword = require("../../utils/comparePassword");
 const generateToken = require("../../utils/generateToken");
 const generateCode = require("../../utils/generateCode");
 const sendEmail = require("../../utils/sendEmail");
+const authMiddleware = require("../../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -212,5 +213,13 @@ router.post(
     }
   }
 );
+
+router.post("/changed-password", authMiddleware, async (req, res, next) => {
+  try {
+    res.json(req.user);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

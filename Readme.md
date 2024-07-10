@@ -55,6 +55,15 @@ Post:localhost:8080/api/v1/auth/recover-password
 }
 ```
 
+# changed signin and generate token
+
+- save it authorization : Bearer token_data
+
+```
+
+
+```
+
 ### All End Point
 
 ### Technology
@@ -67,3 +76,4 @@ Post:localhost:8080/api/v1/auth/recover-password
 - bcryptjs
 - jsonwebtoken
 - nodemailer
+-
