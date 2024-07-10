@@ -1,10 +1,15 @@
 const express = require("express");
 const userModel = require("./user.model");
-const { signupValidator, signinValidator } = require("./user.validator");
+const {
+  signupValidator,
+  signinValidator,
+  emailValidator,
+} = require("./user.validator");
 const validate = require("../../validators/validate");
 const hashPassword = require("../../utils/hashPassword");
 const comparePassword = require("../../utils/comparePassword");
 const generateToken = require("../../utils/generateToken");
+const generateCode = require("../../utils/generateCode");
 
 const router = express.Router();
 
@@ -67,5 +72,40 @@ router.post("/signin", signinValidator, validate, async (req, res, next) => {
     next(error);
   }
 });
+
+router.post(
+  "/send-verification-email",
+  emailValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const user = await userModel.findOne({ email });
+      if (!user) {
+        res.code = 404;
+        throw new Error("User Not found ");
+      }
+
+      // is verified
+
+      if (user.isVerified) {
+        res.code = 400;
+        throw new Error("User is verified");
+      }
+      const code = generateCode(6);
+      user.verificationCode = code;
+      await user.save();
+
+      //
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "User verified",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = router;

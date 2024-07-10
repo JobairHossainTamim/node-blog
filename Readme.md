@@ -19,6 +19,10 @@ localhost:8000/api/v1/auth/signin
 }
 ```
 
+```
+localhost:8000/api/v1/auth/send-verification-email
+```
+
 ### All End Point
 
 ### Technology
@@ -30,3 +34,4 @@ localhost:8000/api/v1/auth/signin
 - Express Validator
 - bcryptjs
 - jsonwebtoken
+- nodemailer
