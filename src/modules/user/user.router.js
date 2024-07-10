@@ -145,4 +145,39 @@ router.post("/verify-user", userValidator, validate, async (req, res, next) => {
   }
 });
 
+router.post(
+  "/forget-password-code",
+  emailValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const user = await userModel.findOne({ email });
+      if (!user) {
+        res.code = 404;
+        throw new Error("User not found");
+      }
+
+      const code = generateCode(6);
+      user.forgetPasswordCode = code;
+      await user.save();
+
+      await sendEmail({
+        emailTo: user.email,
+        subject: "Forgot Password code",
+        code,
+        content: "Change your Password",
+      });
+
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Forgot code sent successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 module.exports = router;

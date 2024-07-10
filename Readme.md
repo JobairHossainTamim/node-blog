@@ -36,6 +36,11 @@ localhost:8000/api/v1/auth/verify-user
 ```
 
 ```
+localhost:8080/api/v1/auth/forget-password-code
+{
+
+    "email":"mohammadjobairhossain@gmail.com"
+}
 
 ```
 
