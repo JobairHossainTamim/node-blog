@@ -5,6 +5,7 @@ const {
   signinValidator,
   emailValidator,
   userValidator,
+  recoverPasswordValidator,
 } = require("./user.validator");
 const validate = require("../../validators/validate");
 const hashPassword = require("../../utils/hashPassword");
@@ -173,6 +174,38 @@ router.post(
         code: 200,
         status: true,
         message: "Forgot code sent successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  "/recover-password",
+  recoverPasswordValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const { email, code, password } = req.body;
+      const user = await userModel.findOne({ email });
+      if (!user) {
+        res.code = 400;
+        throw new Error("User not found");
+      }
+      if (user.forgetPasswordCode !== code) {
+        res.code = 400;
+        throw new Error("Invalid code");
+      }
+
+      const hashedPassword = await hashPassword(password);
+      user.password = hashedPassword;
+      user.forgetPasswordCode = null;
+      await user.save();
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Forgot change password success",
       });
     } catch (error) {
       next(error);
