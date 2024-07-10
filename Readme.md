@@ -21,6 +21,22 @@ localhost:8000/api/v1/auth/signin
 
 ```
 localhost:8000/api/v1/auth/send-verification-email
+{
+    "email":"mohammadjobairhossain@gmail.com"
+}
+
+```
+
+```
+localhost:8000/api/v1/auth/verify-user
+{
+    "email":"mohammadjobairhossain@gmail.com",
+    "code":"367566"
+}
+```
+
+```
+
 ```
 
 ### All End Point

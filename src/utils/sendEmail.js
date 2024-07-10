@@ -7,7 +7,7 @@ const sendEmail = async ({ emailTo, subject, code, content }) => {
     secure: false,
     auth: {
       user: "likeabletamim@gmail.com",
-      pass: "",
+      pass: "cjlmnwrrmqqkzdsm",
     },
   });
   const message = {
