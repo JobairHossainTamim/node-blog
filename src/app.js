@@ -7,6 +7,7 @@ const connectDb = require("./config/dbConfig");
 const notFound = require("./config/notFound.js");
 // Router path
 const userRouter = require("./modules/user/user.router.js");
+const categoryRouter = require("./modules/category/category.router.js");
 const errorHandler = require("./middleware/errorHandler.js");
 
 // init app
@@ -26,7 +27,7 @@ app.use(bodyParser.raw({ type: "application/json" }));
 // router section
 
 app.use("/api/v1/auth", userRouter);
-
+app.use("/api/v1/category", categoryRouter);
 // not found
 app.use("*", notFound);
 // error handler

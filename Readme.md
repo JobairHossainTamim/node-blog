@@ -78,6 +78,12 @@ Put:localhost:8080/api/v1/auth/update-profile
 }
 ```
 
+# Category
+
+```
+
+```
+
 ### All End Point
 
 ### Technology

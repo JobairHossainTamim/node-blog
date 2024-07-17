@@ -9,6 +9,6 @@ const categorySchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Category = mongoose.model("category", categorySchema);
+const categoryModel = mongoose.model("category", categorySchema);
 
-module.exports = Category;
+module.exports = categoryModel;
