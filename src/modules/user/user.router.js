@@ -7,6 +7,7 @@ const {
   userValidator,
   recoverPasswordValidator,
   changePasswordValidator,
+  updateProfileValidator,
 } = require("./user.validator");
 const validate = require("../../validators/validate");
 const hashPassword = require("../../utils/hashPassword");
@@ -15,6 +16,7 @@ const generateToken = require("../../utils/generateToken");
 const generateCode = require("../../utils/generateCode");
 const sendEmail = require("../../utils/sendEmail");
 const authMiddleware = require("../../middleware/authMiddleware");
+const UserModel = require("./user.model");
 
 const router = express.Router();
 
@@ -257,6 +259,40 @@ router.put(
   }
 );
 
-router.put("/");
+router.put("/update-profile", authMiddleware, async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    const { name, email } = req.body;
+
+    const user = await UserModel.findById(_id);
+
+    if (!user) {
+      res.code = 404;
+      throw new Error("User Not found");
+    }
+    if (email) {
+      const isUserAlreadyExist = await userModel.findOne({ email });
+      if (
+        isUserAlreadyExist &&
+        isUserAlreadyExist === email &&
+        String(user._id) !== String(isUserAlreadyExist._id)
+      ) {
+        res.code = 400;
+        throw new Error("Email Already Exist");
+      }
+    }
+    user.name = name ? name : user.name;
+    user.email = email ? email : user.email;
+    await user.save();
+
+    res.status(200).json({
+      code: 200,
+      status: true,
+      message: "Profile update successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
