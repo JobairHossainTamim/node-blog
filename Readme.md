@@ -60,9 +60,14 @@ Post:localhost:8080/api/v1/auth/recover-password
 - save it authorization : Bearer token_data
 
 ```
-
-
+Put: localhost:8080/api/v1/auth/changed-password
+{
+    "oldPassword":"12345678",
+    "newPassword":"Tamim123"
+}
 ```
+
+## update Profile
 
 ### All End Point
 

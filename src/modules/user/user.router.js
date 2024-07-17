@@ -6,6 +6,7 @@ const {
   emailValidator,
   userValidator,
   recoverPasswordValidator,
+  changePasswordValidator,
 } = require("./user.validator");
 const validate = require("../../validators/validate");
 const hashPassword = require("../../utils/hashPassword");
@@ -214,12 +215,48 @@ router.post(
   }
 );
 
-router.post("/changed-password", authMiddleware, async (req, res, next) => {
-  try {
-    res.json(req.user);
-  } catch (error) {
-    next(error);
+router.put(
+  "/changed-password",
+  changePasswordValidator,
+  validate,
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      const { _id } = req.user;
+      const user = await userModel.findById(_id);
+
+      if (!user) {
+        res.code = 404;
+        throw new Error("User Not found");
+      }
+      const match = await comparePassword(oldPassword, user.password);
+
+      if (!match) {
+        res.code = 400;
+        throw new Error("Old Password not matched");
+      }
+
+      if (oldPassword === newPassword) {
+        res.code = 400;
+        throw new Error("You are providing old password");
+      }
+
+      const hashed = await hashPassword(newPassword);
+
+      user.password = hashed;
+      await user.save();
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Password changed success",
+      });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
+
+router.put("/");
 
 module.exports = router;
