@@ -69,6 +69,15 @@ Put: localhost:8080/api/v1/auth/changed-password
 
 ## update Profile
 
+```
+Put:localhost:8080/api/v1/auth/update-profile
+
+{
+    "name":"Tamijm" ,
+    "email":""
+}
+```
+
 ### All End Point
 
 ### Technology
