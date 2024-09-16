@@ -90,7 +90,21 @@ Post : /api/v1/category
     "desc":"Technology"
 }
 
-Put : /api/v1/category
+```
+
+### Update
+
+```
+Put : /api/v1/category/id
+    {
+
+    "title":"News",
+    "desc":"Technology"
+}
+
+delete: /api/v1/category/id
+
+get:/api/v1/category
 
 ```
 

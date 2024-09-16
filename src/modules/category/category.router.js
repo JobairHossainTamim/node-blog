@@ -1,5 +1,5 @@
 const express = require("express");
-const { addCategoryValidator } = require("./category.validator");
+const { addCategoryValidator, isValidator } = require("./category.validator");
 const validate = require("../../validators/validate");
 const authMiddleware = require("../../middleware/authMiddleware");
 const categoryModel = require("./category.model");
@@ -41,6 +41,93 @@ router.post(
         code: 200,
         status: true,
         message: "Category Created Successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.put(
+  "/:id",
+  authMiddleware,
+  isAdmin,
+  addCategoryValidator,
+  isValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { _id } = req.user;
+      const { title, desc } = req.body;
+
+      const category = await categoryModel.findOne({ title });
+      if (!category) {
+        res.code = 404;
+        throw new Error("Category Not found ");
+      }
+
+      category.title = title ? title : category.title;
+      category.desc = desc ? desc : category.desc;
+      category.updatedBy = _id;
+      await category.save();
+
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Category Updated successful",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  "/:id",
+  authMiddleware,
+  isAdmin,
+  addCategoryValidator,
+  isValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const category = await categoryModel.findById(id);
+
+      if (!category) {
+        res.code = 404;
+        throw new Error("Category not found ");
+      }
+      await categoryModel.findByIdAndDelete(id);
+
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Category deleted successful",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
+  "/",
+  authMiddleware,
+  isAdmin,
+  addCategoryValidator,
+  isValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const category = await categoryModel.find({});
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Category List fetch successful",
+        data: { category },
       });
     } catch (error) {
       next(error);
