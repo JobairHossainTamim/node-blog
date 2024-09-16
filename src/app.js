@@ -28,9 +28,14 @@ app.use(bodyParser.raw({ type: "application/json" }));
 
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/category", categoryRouter);
+
 // not found
 app.use("*", notFound);
+
 // error handler
 app.use(errorHandler);
+
+// App
+app.get("/", (req, res) => res.send("Server Running"));
 
 module.exports = app;

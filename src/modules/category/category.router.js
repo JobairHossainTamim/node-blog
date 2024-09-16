@@ -4,6 +4,7 @@ const validate = require("../../validators/validate");
 const authMiddleware = require("../../middleware/authMiddleware");
 const categoryModel = require("./category.model");
 const userModel = require("../user/user.model");
+const isAdmin = require("../../middleware/isAdmin");
 
 const router = express.Router();
 
@@ -12,6 +13,8 @@ router.post(
   authMiddleware,
   addCategoryValidator,
   validate,
+  isAdmin,
+
   async (req, res, next) => {
     try {
       const { title, desc } = req.body;
@@ -34,13 +37,11 @@ router.post(
       const newCategory = categoryModel({ title, desc, updatedBy: _id });
       await newCategory.save();
 
-      res
-        .status(200)
-        .json({
-          code: 200,
-          status: true,
-          message: "Category Created Successfully",
-        });
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Category Created Successfully",
+      });
     } catch (error) {
       next(error);
     }

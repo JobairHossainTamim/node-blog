@@ -81,6 +81,16 @@ Put:localhost:8080/api/v1/auth/update-profile
 # Category
 
 ```
+Post : /api/v1/category
+
+
+    {
+
+    "title":"News",
+    "desc":"Technology"
+}
+
+Put : /api/v1/category
 
 ```
 
