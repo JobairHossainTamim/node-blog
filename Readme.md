@@ -92,7 +92,7 @@ Post : /api/v1/category
 
 ```
 
-### Update
+### Update category
 
 ```
 Put : /api/v1/category/id
@@ -105,6 +105,13 @@ Put : /api/v1/category/id
 delete: /api/v1/category/id
 
 get:/api/v1/category
+
+```
+
+### Get Query Search
+
+```
+Get: localhost:8080/api/v1/category?title=n
 
 ```
 

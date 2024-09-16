@@ -114,7 +114,7 @@ router.delete(
 );
 
 router.get(
-  "/",
+  "/all",
   authMiddleware,
   isAdmin,
   addCategoryValidator,
@@ -135,4 +135,33 @@ router.get(
   }
 );
 
+router.get(
+  "/",
+  authMiddleware,
+  isAdmin,
+  addCategoryValidator,
+  isValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const { title } = req.query;
+      let query = {};
+
+      if (title) {
+        const search = RegExp(title, "i");
+        query = { $or: [{ title: search }] };
+      }
+
+      const category = await categoryModel.find(query);
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Category List fetched successfully",
+        data: { category },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 module.exports = router;
