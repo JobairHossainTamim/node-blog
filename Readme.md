@@ -112,6 +112,7 @@ get:/api/v1/category
 
 ```
 Get: localhost:8080/api/v1/category?title=n
+GET:localhost:8080/api/v1/category?size=2&page=1
 
 ```
 

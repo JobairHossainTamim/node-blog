@@ -144,24 +144,65 @@ router.get(
   validate,
   async (req, res, next) => {
     try {
-      const { title } = req.query;
+      const { title, size, page } = req.query;
       let query = {};
+
+      // sizeNumber // Page
+      const sizeNumber = parseInt(size) || 10;
+      const pageNumber = parseInt(page) || 1;
 
       if (title) {
         const search = RegExp(title, "i");
-        query = { $or: [{ title: search }] };
+        query = { $or: [{ title: search }, { desc: search }] };
       }
 
-      const category = await categoryModel.find(query);
+      const total = await categoryModel.countDocuments(query);
+      const pages = Math.ceil(total / sizeNumber);
+
+      const category = await categoryModel
+        .find(query)
+        .skip((pageNumber - 1) * sizeNumber)
+        .limit(sizeNumber)
+        .sort({ updatedBy: -1 });
+
       res.status(200).json({
         code: 200,
         status: true,
         message: "Category List fetched successfully",
-        data: { category },
+        data: { category, total, pages },
       });
     } catch (error) {
       next(error);
     }
   }
 );
+
+router.get(
+  "/:id",
+  authMiddleware,
+  isAdmin,
+  isValidator,
+  validate,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const category = await categoryModel.findById(id);
+
+      if (!category) {
+        res.code = 404;
+        throw new Error("Category Not Found");
+      }
+      res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Get Category",
+        data: category,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 module.exports = router;
