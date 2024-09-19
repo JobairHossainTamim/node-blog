@@ -9,6 +9,7 @@ const notFound = require("./config/notFound.js");
 const userRouter = require("./modules/user/user.router.js");
 const categoryRouter = require("./modules/category/category.router.js");
 const errorHandler = require("./middleware/errorHandler.js");
+const files = require("./modules/files/file.router.js");
 
 // init app
 
@@ -28,6 +29,7 @@ app.use(bodyParser.raw({ type: "application/json" }));
 
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/file", files);
 
 // not found
 app.use("*", notFound);
