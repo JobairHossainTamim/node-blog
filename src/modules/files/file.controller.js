@@ -1,6 +1,6 @@
 const uploadFile = async (req, res, next) => {
   try {
-    console.log(req.body);
+    res.json({ ok: true });
   } catch (error) {
     next(error);
   }
