@@ -33,4 +33,12 @@ const getUrlImage = async (key) => {
   }
 };
 
-module.exports = { uploadCloudFile, getUrlImage };
+const CloudDeleteFile = async (key) => {
+  try {
+    const result = await cloudinary.api.delete_resources(key);
+    return result;
+  } catch (error) {
+    throw new Error("Delete Failed");
+  }
+};
+module.exports = { uploadCloudFile, getUrlImage, CloudDeleteFile };

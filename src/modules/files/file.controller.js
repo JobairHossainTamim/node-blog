@@ -1,6 +1,10 @@
 const path = require("path");
 const { validExtension } = require("./file.validator");
-const { uploadCloudFile, getUrlImage } = require("./cloud.upload");
+const {
+  uploadCloudFile,
+  getUrlImage,
+  CloudDeleteFile,
+} = require("./cloud.upload");
 const fileModel = require("./file.model");
 
 const uploadFile = async (req, res, next) => {
@@ -60,4 +64,23 @@ const getImageUrl = async (req, res, next) => {
   }
 };
 
-module.exports = { uploadFile, getImageUrl };
+const deleteFile = async (req, res, next) => {
+  try {
+    const { key } = req.query;
+    const cloudDel = await CloudDeleteFile(key);
+    const mongoDel = await fileModel.findOneAndDelete({ key });
+    res.status(201).json({
+      code: 201,
+      status: true,
+      message: "File Url Successfully fetch",
+      data: {
+        CloudDelete: cloudDel,
+        MongoDelete: mongoDel,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { uploadFile, getImageUrl, deleteFile };

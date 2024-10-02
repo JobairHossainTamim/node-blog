@@ -12,4 +12,6 @@ router.post("/upload", authMiddleware, uploadSize.single("image"), uploadFile);
 
 router.get("/image-url", authMiddleware, getImageUrl);
 
+router.delete("/image-del", authMiddleware);
+
 module.exports = router;
