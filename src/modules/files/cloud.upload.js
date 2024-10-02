@@ -23,4 +23,14 @@ const uploadCloudFile = async ({ file, ext }) => {
   }
 };
 
-module.exports = uploadCloudFile;
+const getUrlImage = async (key) => {
+  try {
+    const result = await cloudinary.api.resource(key);
+
+    return result;
+  } catch (error) {
+    throw new Error("Get Url failed.");
+  }
+};
+
+module.exports = { uploadCloudFile, getUrlImage };

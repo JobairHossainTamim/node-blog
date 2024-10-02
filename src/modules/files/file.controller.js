@@ -1,6 +1,6 @@
 const path = require("path");
 const { validExtension } = require("./file.validator");
-const uploadCloudFile = require("./cloud.upload");
+const { uploadCloudFile, getUrlImage } = require("./cloud.upload");
 const fileModel = require("./file.model");
 
 const uploadFile = async (req, res, next) => {
@@ -43,4 +43,21 @@ const uploadFile = async (req, res, next) => {
   }
 };
 
-module.exports = { uploadFile };
+const getImageUrl = async (req, res, next) => {
+  try {
+    const { key } = req.query;
+    const getData = await getUrlImage(key);
+    res.status(201).json({
+      code: 201,
+      status: true,
+      message: "File Url Successfully fetch",
+      data: {
+        url: getData?.url,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { uploadFile, getImageUrl };
