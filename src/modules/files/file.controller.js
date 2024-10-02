@@ -1,6 +1,7 @@
 const path = require("path");
 const { validExtension } = require("./file.validator");
 const uploadCloudFile = require("./cloud.upload");
+const fileModel = require("./file.model");
 
 const uploadFile = async (req, res, next) => {
   try {
@@ -19,6 +20,17 @@ const uploadFile = async (req, res, next) => {
     }
 
     const key = await uploadCloudFile({ file, ext });
+
+    if (key) {
+      const newFile = new fileModel({
+        key: key.public_id,
+        size: file.size,
+        mimetype: file.mimetype,
+        createdBy: req.user._id,
+      });
+
+      await newFile.save();
+    }
 
     res.status(201).json({
       code: 201,

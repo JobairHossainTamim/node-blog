@@ -116,6 +116,15 @@ GET:localhost:8080/api/v1/category?size=2&page=1
 
 ```
 
+### Upload File
+
+```
+Post: /file/upload
+
+```
+
+- form data input image
+
 ### All End Point
 
 ### Technology

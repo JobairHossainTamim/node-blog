@@ -10,4 +10,6 @@ const uploadSize = require("../../middleware/uploadSize");
 // upload.array("image", 3)
 router.post("/upload", authMiddleware, uploadSize.single("image"), uploadFile);
 
+router.get("/signed-url");
+
 module.exports = router;
