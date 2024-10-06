@@ -131,6 +131,22 @@ Delete : /file/image-del?key=653591415092_1727856686088_.jpg
 
 - form data input image
 
+#### Add Post
+
+```
+/post/
+
+add
+patch
+delete
+{
+    "title":"TikTok purges accounts tied to Russian media over ‘covert influence’ efforts ahead of US election",
+    "desc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem  including versions of Lorem Ipsum.",
+    "category":"66e7ceb872db07317faf4005",
+    "file":"67021df40e95c04beb714cb2"
+}
+```
+
 ### All End Point
 
 ### Technology
