@@ -295,4 +295,24 @@ router.put("/update-profile", authMiddleware, async (req, res, next) => {
   }
 });
 
+router.get("/current-user", authMiddleware, async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    const user = await UserModel.findById(_id)
+      .select("-password -verificationCode")
+      .populate("profilePic");
+
+    if (!user) {
+      res.code = 404;
+      throw new Error("User Not Found");
+    }
+    res.status(200).json({
+      code: 200,
+      status: true,
+      data: { user },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports = router;

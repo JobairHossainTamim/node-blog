@@ -55,6 +55,10 @@ Post:localhost:8080/api/v1/auth/recover-password
 }
 ```
 
+```
+Get :{{url}}auth/current-user
+```
+
 # changed signin and generate token
 
 - save it authorization : Bearer token_data
@@ -120,6 +124,8 @@ GET:localhost:8080/api/v1/category?size=2&page=1
 
 ```
 Post: /file/upload
+
+Delete : /file/image-del?key=653591415092_1727856686088_.jpg
 
 ```
 
